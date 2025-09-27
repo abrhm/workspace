@@ -1,18 +1,23 @@
 
+# Path to your oh-my-zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
 
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+# Set name of the theme to load
+ZSH_THEME="robbyrussell"
+
+# History configuration
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
+# Oh My Zsh plugins
+plugins=(git docker)
+
+# Load Oh My Zsh
+source $ZSH/oh-my-zsh.sh
+
+# Vi mode
 bindkey -v
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-# zstyle :compinstall filename '/home/user/.zshrc'
 
-# autoload -Uz compinit
-# compinit
-# End of lines added by compinstall
-
-# Disable zsh-newuser-install
-skip_global_compinit=1
-zstyle :compinstall filename '/etc/zsh/zshrc'
+# User configuration
+export PATH=$HOME/bin:/usr/local/bin:$PATH
