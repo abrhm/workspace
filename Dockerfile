@@ -3,8 +3,8 @@ FROM archlinux:latest
 COPY . /snapshot
 RUN echo $(date +%Y%m%d-%H%M%S) > /snapshot/version.txt
 
-ARG PACMAN_DEPS="base-devel git sudo"
-ENV MODULES="zsh nvim tmux node keepass"
+ARG PACMAN_DEPS="base-devel git sudo python"
+ENV MODULES="zsh lazygit nvim tmux node keepass"
 
 # Generate the list of pacman dependencies
 RUN echo "$PACMAN_DEPS" | tr ' ' '\n' > /snapshot/pkglist.txt && \
