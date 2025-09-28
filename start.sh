@@ -19,7 +19,8 @@ else
 fi
 
 # Start building the docker run command with the current directory mount
-cmd="docker run --rm -it -v $(pwd):/workspace"
+# TODO: Use proper path instead of pwd
+cmd="docker run --rm -it -v $(pwd):/workspace -v $(pwd)/ssh:/home/user/.ssh"
 
 # Process remaining parameters as additional mounts
 while [ $# -gt 0 ]; do
