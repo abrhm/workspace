@@ -14,6 +14,8 @@ ENV MODULES="zsh nvim tmux node keepass"
 # Copy the dependencies from the host to the container
 COPY deps /deps
 
+# TODO: Instead of installing the dependencies in pacman collect them and run a single pacman install command
+
 # Ensure install order by renaming folders or specifying order explicitly
 RUN for module in $MODULES; do bash /deps/$module/install.sh; done
 
