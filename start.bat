@@ -14,13 +14,13 @@ if "%1"=="-r" (
 
 REM Build docker image with --no-cache only if -r flag is present
 if defined rebuild (
-    docker build --no-cache -t devenv .
+    docker build --no-cache -t workspace .
 ) else (
-    docker build -t devenv .
+    docker build -t workspace .
 )
 
 REM Start building the docker run command with the current directory mount
-set "cmd=docker run --rm -it -v "%~dp0:/devenv""
+set "cmd=docker run --rm -it -v "%~dp0:/workspace""
 
 REM Process remaining parameters as additional mounts
 :param_loop
@@ -42,5 +42,5 @@ if "%1" neq "" (
 )
 
 REM Add the image name and execute
-set "cmd=!cmd! devenv"
+set "cmd=!cmd! workspace"
 %cmd%

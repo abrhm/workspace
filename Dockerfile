@@ -1,23 +1,29 @@
 FROM archlinux:latest
 
-RUN pacman -Syu --noconfirm && \
-    pacman -S --noconfirm \
-    base-devel \
-    git \
-    sudo
+COPY . /snapshot
+RUN echo $(date +%Y%m%d-%H%M%S) > /snapshot/version.txt
 
-# Define the list of dependencies and their install order
-# This should be defined first, so when this is changed the deps are copied again
-# and the layers are invalidated, forcing a reinstall of the dependencies
+ARG PACMAN_DEPS="base-devel git sudo"
 ENV MODULES="zsh nvim tmux node keepass"
 
-# Copy the dependencies from the host to the container
-COPY deps /deps
+# Generate the list of pacman dependencies
+RUN echo "$PACMAN_DEPS" | tr ' ' '\n' > /snapshot/pkglist.txt && \
+    for module in $MODULES; do \
+        if [ -f "/snapshot/modules/$module/pkglist.txt" ]; then \
+            echo "" >> /snapshot/pkglist.txt && \
+            cat "/snapshot/modules/$module/pkglist.txt" >> /snapshot/pkglist.txt; \
+        fi; \
+    done
 
-# TODO: Instead of installing the dependencies in pacman collect them and run a single pacman install command
+RUN pacman -Syu --noconfirm && \
+    pacman -S --noconfirm $(cat /snapshot/pkglist.txt | xargs)
 
-# Ensure install order by renaming folders or specifying order explicitly
-RUN for module in $MODULES; do bash /deps/$module/install.sh; done
+# Run the install scripts for each module to set them up
+RUN for module in $MODULES; do \
+    if [ -f "/snapshot/modules/$module/install.sh" ]; then \
+        bash /snapshot/modules/$module/install.sh; \
+    fi; \
+done
 
 RUN useradd -m -s /bin/zsh user && \
     echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers

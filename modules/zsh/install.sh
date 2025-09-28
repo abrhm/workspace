@@ -1,11 +1,8 @@
 #! /bin/bash
 
-# Install zsh
-pacman -S --noconfirm zsh
-
 # Copy our zsh configuration to the skeleton directory
 mkdir -p /etc/skel
-cp /deps/zsh/config/.zshrc /etc/skel/.zshrc
+ln -s /snapshot/modules/zsh/.zshrc /etc/skel/.zshrc
 
 # Install Oh My Zsh to the skeleton directory so new users get it
 export KEEP_ZSHRC="yes"
