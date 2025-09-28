@@ -1,3 +1,3 @@
 #! /bin/bash
 
-pacman -S --noconfirm nvim
+pacman -S --noconfirm neovim
